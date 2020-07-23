@@ -1,0 +1,33 @@
+#!/bin/sh
+
+# A dwm_bar function to read the battery level and status
+# Joe Standring <git@joestandring.com>
+# GNU GPLv3
+
+dwm_battery () {
+    NC="\x01"
+    RED="\x05"
+    ORANGE="\x06"
+    YELLOW="\x07"
+    LIGHTGREEN="\x08"
+    GREEN="\x09"
+    # Change BAT1 to whatever your battery is identified as. Typically BAT0 or BAT1
+    CHARGE=$(cat /sys/class/power_supply/BAT0/capacity)
+    STATUS=$(cat /sys/class/power_supply/BAT0/status)
+    CHARGING=""
+
+    if [ $CHARGE -le 20 ]; then
+        echo -e "$SEP1" "$CHARGING""$RED $NC""$CHARGE"% "$SEP2"
+    elif [ $CHARGE -gt 20 -a $CHARGE -le 30 ]; then
+        echo -e "$SEP1" "$CHARGING""$ORANGE $NC""$CHARGE"% "$SEP2"
+    elif [ $CHARGE -gt 30 -a $CHARGE -le 60 ]; then
+        echo -e "$SEP1" "$CHARGING""$YELLOW $NC""$CHARGE"% "$SEP2"
+    elif [ $CHARGE -gt 60 -a $CHARGE -le 80 ]; then
+        echo -e "$SEP1" "$CHARGING""$LIGHTGREEN $NC""$CHARGE"% "$SEP2"
+    else
+        echo -e "$SEP1" "$CHARGING""$GREEN $NC""$CHARGE"% "$SEP2"
+    fi
+}
+
+dwm_battery
+

@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# A dwm_bar function to show the current network connection/SSID, private IP, and public IP using NetworkManager
+# Joe Standring <git@joestandring.com>
+# GNU GPLv3
+
+# Dependencies: NetworkManager
+
+# import colors for dwm
+source "$(dirname "$0")/colors"
+
+dwm_networkmanager () {
+    # only wifi
+    CONNAME=$(nmcli -t -f active,ssid dev wifi | grep '^yes' | cut -c 5-)
+    CONSTRENGTH=""
+
+    if [ "$CONNAME" != "" ]; then
+        CONSTRENGTH=$(awk '/^\s*w/ { print int($3 * 100 / 70) }' /proc/net/wireless)
+    fi
+    
+    if [ "$CONNAME" != "" ]; then
+        if [ $CONSTRENGTH -le 20 ]; then
+            echo -e "$SEP1" "$RED $NC""$CONNAME" "$SEP2"
+        elif [ $CONSTRENGTH -gt 20 -a $CONSTRENGTH -le 30 ]; then
+            echo -e "$SEP1" "$ORANGE $NC""$CONNAME" "$SEP2"
+        elif [ $CONSTRENGTH -gt 30 -a $CONSTRENGTH -le 60 ]; then
+            echo -e "$SEP1" "$YELLOW $NC""$CONNAME" "$SEP2"
+        elif [ $CONSTRENGTH -gt 60 -a $CONSTRENGTH -le 80 ]; then
+            echo -e "$SEP1" "$LIGHTGREEN $NC""$CONNAME" "$SEP2"
+        else
+            echo -e "$SEP1" "$GREEN $NC""$CONNAME" "$SEP2"
+        fi
+    else
+        echo -e "$SEP1" "$RED $NC" "$SEP2"
+    fi
+}
+
+dwm_networkmanager

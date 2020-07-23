@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# A dwm_bar function to display information regarding system memory, CPU temperature, and storage
+# Joe Standring <git@joestandring.com>
+# GNU GPLv3
+
+# import colors for dwm
+source "$(dirname "$0")/colors"
+
+dwm_resources () {
+    # used percentage and free space on root dir
+    STOFREE=$(df -h | grep '/$' | awk '{print $4}' | sed 's/G/ GB/')
+    STOPER=$(df -h | grep '/$' | awk '{print $5}')
+
+    echo -e "$SEP1" "$GREEN $NC""$STOPER" "($STOFREE)" "$SEP2"
+}
+
+dwm_resources

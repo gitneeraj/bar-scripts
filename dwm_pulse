@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# A dwm_bar function to show the master volume of PulseAudio
+# Joe Standring <git@joestandring.com>
+# GNU GPLv3
+
+# Dependencies: pamixer
+
+# import colors for dwm
+source "$(dirname "$0")/colors"
+
+dwm_pulse () {
+    VOL=$(pamixer --get-volume-human | tr -d '%')
+    
+    printf "%s" "$SEP1"
+    if [ "$VOL" = "muted" ] || [ "$VOL" -eq 0 ]; then
+        echo -e "$SEP1" "$RED $NC" "$SEP2"
+    elif [ "$VOL" -gt 0 ] && [ "$VOL" -le 33 ]; then
+        echo -e "$SEP1" "$YELLOW $NC""$VOL"% "$SEP2"
+    elif [ "$VOL" -gt 33 ] && [ "$VOL" -le 66 ]; then
+        echo -e "$SEP1" "$GREEN $NC""$VOL"% "$SEP2"
+    else
+        echo -e "$SEP1" "$RED $NC""$VOL"% "$SEP2"
+    fi
+}
+
+dwm_pulse

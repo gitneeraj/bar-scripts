@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Author; gitneeraj
+
+# import colors for dwm
+source "$(dirname "$0")/colors"
+
+dwm_cpu () {
+    # CPU used percentage
+    CIELNUMBER=$(top -bn1 | grep load | awk '{printf "%.2f%%\t\t\n", $(NF-2)}' | tr -d '%')
+
+    CIELNUMBER=$(python -c "from math import ceil; print(ceil($CIELNUMBER))")
+
+    if [ $CIELNUMBER -le 10 ]; then
+        echo -e "$SEP1" "$GREEN $NC""$CIELNUMBER"% "$SEP2"
+    elif [ $CIELNUMBER -gt 10 -a $CIELNUMBER -le 20 ]; then
+        echo -e "$SEP1" "$LIGHTGREEN $NC""$CIELNUMBER"% "$SEP2"
+    elif [ $CIELNUMBER -gt 20 -a $CIELNUMBER -le 30 ]; then
+        echo -e "$SEP1" "$YELLOW $NC""$CIELNUMBER"% "$SEP2"
+    elif [ $CIELNUMBER -gt 30 -a $CIELNUMBER -le 50 ]; then
+        echo -e "$SEP1" "$ORANGE $NC""$CIELNUMBER"% "$SEP2"
+    else
+        echo -e "$SEP1" "$RED $NC""$CIELNUMBER"% "$SEP2"
+    fi
+}
+
+dwm_cpu

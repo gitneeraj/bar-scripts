@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# A dwm_bar module to display the current backlight brighness with xbacklight
+# Joe Standring <git@joestandring.com>
+# GNU GPLv3
+
+# import colors for dwm
+source "$(dirname "$0")/colors"
+
+dwm_backlight () {
+    CURRENT_BRIGHTNESS=$((`cat /sys/class/backlight/intel_backlight/brightness` / 1000))
+    
+    if [ $CURRENT_BRIGHTNESS -le 40 ]; then
+        echo -e "$SEP1" "$GREEN $NC""$CURRENT_BRIGHTNESS"% "$SEP2"
+    elif [ $CURRENT_BRIGHTNESS -gt 40 -a $CURRENT_BRIGHTNESS -le 60 ]; then
+        echo -e "$SEP1" "$YELLOW $NC""$CURRENT_BRIGHTNESS"% "$SEP2"
+    else
+        echo -e "$SEP1" "$RED $NC""$CURRENT_BRIGHTNESS"% "$SEP2"
+    fi
+}
+
+dwm_backlight

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+NC="\x01"
+RED="\x05"
+ORANGE="\x06"
+YELLOW="\x07"
+LIGHTGREEN="\x08"
+GREEN="\x09"

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Author; gitneeraj
+
+# import colors for dwm
+source "$(dirname "$0")/colors"
+
+dwm_memory () {
+    # RAM memory used percentage
+    MEMUSEDPER=$(free -b | awk '/^Mem/ { printf "%.f%%\n", ($3+$5)*100/$2 }' | tr -d '%')
+
+    if [ $MEMUSEDPER -le 20 ]; then
+        echo -e "$SEP1" "$GREEN $NC""$MEMUSEDPER"% "$SEP2"
+    elif [ $MEMUSEDPER -gt 20 -a $MEMUSEDPER -le 30 ]; then
+        echo -e "$SEP1" "$LIGHTGREEN $NC""$MEMUSEDPER"% "$SEP2"
+    elif [ $MEMUSEDPER -gt 30 -a $MEMUSEDPER -le 60 ]; then
+        echo -e "$SEP1" "$YELLOW $NC""$MEMUSEDPER"% "$SEP2"
+    elif [ $MEMUSEDPER -gt 60 -a $MEMUSEDPER -le 80 ]; then
+        echo -e "$SEP1" "$ORANGE $NC""$MEMUSEDPER"% "$SEP2"
+    else
+        echo -e "$SEP1" "$RED $NC""$MEMUSEDPER"% "$SEP2"
+    fi
+}
+
+dwm_memory
