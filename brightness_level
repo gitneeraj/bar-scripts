@@ -1,0 +1,21 @@
+#!/bin/sh
+
+CHANGE=${1}
+
+if [ "$CHANGE" = "+" ]; then
+    echo $((`cat /sys/class/backlight/intel_backlight/brightness` + 3000)) > /sys/class/backlight/intel_backlight/brightness
+else
+    echo $((`cat /sys/class/backlight/intel_backlight/brightness` - 3000)) > /sys/class/backlight/intel_backlight/brightness
+fi
+
+CURRENT_BRIGHTNESS=$((`cat /sys/class/backlight/intel_backlight/brightness` / 1000))
+
+if [ $CURRENT_BRIGHTNESS -le 40 ]; then
+    APPNAME="brightness_low"
+elif [ $CURRENT_BRIGHTNESS -gt 40 -a $CURRENT_BRIGHTNESS -le 60 ]; then
+    APPNAME="brightness_medium"
+else
+    APPNAME="brightness_high"
+fi
+
+dunstify -u normal -a ${APPNAME} -r 10 "Brightness level at ${CURRENT_BRIGHTNESS}%"

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+CHANGE=${1}
+
+if [ "$CHANGE" = "mute" ]; then
+    pactl set-sink-mute 0 toggle
+else
+    pactl set-sink-volume 0 ${CHANGE}10%
+fi
+
+VOL=$(pamixer --get-volume-human | tr -d '%')
+TEXT="level at ${VOL}%"
+
+if [ "$VOL" = "muted" ] || [ "$VOL" -eq 0 ]; then
+    TEXT="muted"
+    APPNAME="sound_volume_mute"
+elif [ "$VOL" -gt 0 ] && [ "$VOL" -le 33 ]; then
+    APPNAME="sound_volume_low"
+elif [ "$VOL" -gt 33 ] && [ "$VOL" -le 66 ]; then
+    APPNAME="sound_volume_medium"
+else
+    APPNAME="sound_volume_high"
+fi
+
+dunstify -u normal -a ${APPNAME} -r 10 "Volume ${TEXT}"
