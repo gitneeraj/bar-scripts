@@ -22,4 +22,4 @@ else
     APPNAME="sound_volume_high"
 fi
 
-dunstify -u normal -a ${APPNAME} -r 10 "Volume ${TEXT}"
+dunstify -u normal -a ${APPNAME} -r 11 "Volume ${TEXT}"
