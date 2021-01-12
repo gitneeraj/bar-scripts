@@ -3,9 +3,11 @@
 CHANGE=${1}
 
 if [ "$CHANGE" = "+" ]; then
-    echo $((`cat /sys/class/backlight/intel_backlight/brightness` + 3000)) > /sys/class/backlight/intel_backlight/brightness
+    # echo $((`cat /sys/class/backlight/intel_backlight/brightness` + 3000)) > /sys/class/backlight/intel_backlight/brightness
+    xbacklight -inc 10
 else
-    echo $((`cat /sys/class/backlight/intel_backlight/brightness` - 3000)) > /sys/class/backlight/intel_backlight/brightness
+    # echo $((`cat /sys/class/backlight/intel_backlight/brightness` - 3000)) > /sys/class/backlight/intel_backlight/brightness
+    xbacklight -dec 10
 fi
 
 CURRENT_BRIGHTNESS=$((`cat /sys/class/backlight/intel_backlight/brightness` / 1000))
