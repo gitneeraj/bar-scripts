@@ -1,5 +1,9 @@
 #!/bin/sh
 
+# Author: gitneeraj
+# Dependencies: xbacklight, dunst
+
+
 CHANGE=${1}
 
 if [ "$CHANGE" = "+" ]; then
