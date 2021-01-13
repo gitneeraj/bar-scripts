@@ -3,16 +3,16 @@
 CHANGE=${1}
 
 if [ "$CHANGE" = "mute" ]; then
-    # pactl set-sink-mute 0 toggle
-    amixer set Master toggle
+    pactl set-sink-mute 0 toggle
+    # amixer set Master toggle
 else
-    # pactl set-sink-volume 0 ${CHANGE}10%
-    amixer set Master playback 2${CHANGE}
+    pactl set-sink-volume 0 ${CHANGE}10%
+    # amixer set Master playback 2${CHANGE}
 fi
 
-# VOL=$(pamixer --get-volume-human | tr -d '%')
-VOL=$(awk -F"[][]" '/dB/ { print $2 }' <(amixer sget Master))
-TEXT="level at ${VOL}"
+VOL=$(pamixer --get-volume-human | tr -d '%')
+# VOL=$(awk -F"[][]" '/dB/ { print $2 }' <(amixer sget Master))
+TEXT="level at ${VOL}%"
 
 if [ "$VOL" = "muted" ] || [ "$VOL" -eq 0 ]; then
     TEXT="muted"
